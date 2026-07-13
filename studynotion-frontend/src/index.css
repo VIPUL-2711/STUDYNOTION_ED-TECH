@@ -1,0 +1,103 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --color-ink-950: #100D3A;
+  --color-ink-900: #1B1464;
+  --color-ink-800: #241C7A;
+  --color-ink-700: #322894;
+  --color-ink-600: #4636AC;
+  --color-ink-100: #E7E5F8;
+  --color-ink-50: #F2F1FB;
+
+  --color-amber-500: #F4A100;
+  --color-amber-400: #FFB627;
+  --color-amber-300: #FFD37A;
+  --color-amber-100: #FFF1D6;
+
+  --color-emerald-600: #0E9F6E;
+  --color-emerald-500: #10B981;
+  --color-emerald-100: #DCFCE9;
+
+  --color-paper: #FAF9F6;
+  --color-paper-dim: #F1EEE6;
+  --color-charcoal: #1F2430;
+  --color-charcoal-dim: #565D6D;
+
+  --color-rose-600: #DC4C4C;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-charcoal);
+  font-family: var(--font-body);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+}
+
+/* signature highlighter-marker stroke behind emphasized text */
+.marker-highlight {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+}
+.marker-highlight::before {
+  content: "";
+  position: absolute;
+  left: -0.15em;
+  right: -0.15em;
+  bottom: 0.05em;
+  height: 0.42em;
+  background: linear-gradient(90deg, var(--color-amber-400), var(--color-amber-300));
+  border-radius: 3px 6px 4px 7px / 5px 3px 6px 4px;
+  transform: rotate(-0.6deg);
+  z-index: 0;
+}
+.marker-highlight > span {
+  position: relative;
+  z-index: 1;
+}
+
+/* index-card folded corner used on course cards */
+.folded-corner {
+  position: relative;
+}
+.folded-corner::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 18px 18px 0;
+  border-color: transparent var(--color-paper-dim) transparent transparent;
+  transition: border-color 0.2s ease;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: var(--color-ink-100);
+  border-radius: 999px;
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in-up {
+  animation: fade-in-up 0.5s ease both;
+}

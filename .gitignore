@@ -1,0 +1,18 @@
+# Dependencies
+**/node_modules/
+
+# Environment variables (secrets)
+**/.env
+
+# Build output
+**/dist/
+**/build/
+
+# Backend temp upload folder
+**/tmp/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
