@@ -1,4 +1,4 @@
-const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:4000/api/v1"
+const BASE_URL = import.meta.env.VITE_BASE_URL || "https://studynotion-ed-tech-5wau.onrender.com/api/v1"
 
 // AUTH ENDPOINTS -> mounted at /api/v1/auth (routes/User.js)
 export const authEndpoints = {
