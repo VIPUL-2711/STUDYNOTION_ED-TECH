@@ -2,6 +2,8 @@
 
 A full-stack e-learning platform (MERN stack) where students browse and purchase courses, instructors build and publish courses through a step-by-step wizard, and admins manage course categories. Built with a React frontend and a Node.js/Express/MongoDB backend.
 
+##LIVE :- https://studynotion-ed-tech-1-9bsy.onrender.com/
+
 ## Features
 
 - **Authentication** — email OTP-verified signup, JWT-based login, forgot/reset password, change password
