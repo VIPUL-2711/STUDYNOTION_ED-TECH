@@ -78,49 +78,57 @@ export default function CourseInformationForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="rounded-2xl border border-ink-100 bg-white p-6">
+    <form onSubmit={handleSubmit} className="glass-card rounded-2xl border border-white/10 p-6 md:p-8 space-y-6">
       <label className="block">
-        <p className="mb-1 text-sm font-medium text-charcoal">Course title <sup className="text-rose-600">*</sup></p>
+        <p className="mb-2 text-sm font-medium text-slate-300">
+          Course Title <sup className="text-pink-500">*</sup>
+        </p>
         <input
           required
           type="text"
           name="courseName"
           value={formData.courseName}
           onChange={handleChange}
-          placeholder="e.g. Complete Web Development Bootcamp"
-          className="w-full rounded-lg border border-ink-100 bg-white px-4 py-3 text-sm outline-none focus:border-ink-900"
+          placeholder="e.g. Complete Full Stack Web Development Bootcamp"
+          className="w-full rounded-xl border border-white/10 bg-midnight-card/80 px-4 py-3 text-sm text-white placeholder-slate-500 outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/50 transition"
         />
       </label>
 
-      <label className="mt-5 block">
-        <p className="mb-1 text-sm font-medium text-charcoal">Course description <sup className="text-rose-600">*</sup></p>
+      <label className="block">
+        <p className="mb-2 text-sm font-medium text-slate-300">
+          Course Description <sup className="text-pink-500">*</sup>
+        </p>
         <textarea
           required
           rows={4}
           name="courseDescription"
           value={formData.courseDescription}
           onChange={handleChange}
-          placeholder="What is this course about?"
-          className="w-full rounded-lg border border-ink-100 bg-white px-4 py-3 text-sm outline-none focus:border-ink-900"
+          placeholder="What is this course about? Outline the objectives and scope."
+          className="w-full rounded-xl border border-white/10 bg-midnight-card/80 px-4 py-3 text-sm text-white placeholder-slate-500 outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/50 transition resize-y"
         />
       </label>
 
-      <label className="mt-5 block">
-        <p className="mb-1 text-sm font-medium text-charcoal">What you'll learn <sup className="text-rose-600">*</sup></p>
+      <label className="block">
+        <p className="mb-2 text-sm font-medium text-slate-300">
+          What You'll Learn <sup className="text-pink-500">*</sup>
+        </p>
         <textarea
           required
           rows={4}
           name="WhatYouWillLearn"
           value={formData.WhatYouWillLearn}
           onChange={handleChange}
-          placeholder="List the key takeaways for students"
-          className="w-full rounded-lg border border-ink-100 bg-white px-4 py-3 text-sm outline-none focus:border-ink-900"
+          placeholder="List key takeaways, skills, and projects students will build."
+          className="w-full rounded-xl border border-white/10 bg-midnight-card/80 px-4 py-3 text-sm text-white placeholder-slate-500 outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/50 transition resize-y"
         />
       </label>
 
-      <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <label className="block">
-          <p className="mb-1 text-sm font-medium text-charcoal">Price (₹) <sup className="text-rose-600">*</sup></p>
+          <p className="mb-2 text-sm font-medium text-slate-300">
+            Price (₹) <sup className="text-pink-500">*</sup>
+          </p>
           <input
             required
             type="number"
@@ -129,49 +137,61 @@ export default function CourseInformationForm() {
             value={formData.price}
             onChange={handleChange}
             placeholder="499"
-            className="w-full rounded-lg border border-ink-100 bg-white px-4 py-3 text-sm outline-none focus:border-ink-900"
+            className="w-full rounded-xl border border-white/10 bg-midnight-card/80 px-4 py-3 text-sm text-white placeholder-slate-500 outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/50 transition"
           />
         </label>
 
         <label className="block">
-          <p className="mb-1 text-sm font-medium text-charcoal">Category <sup className="text-rose-600">*</sup></p>
+          <p className="mb-2 text-sm font-medium text-slate-300">
+            Category <sup className="text-pink-500">*</sup>
+          </p>
           <select
             required
             name="category"
             value={formData.category}
             onChange={handleChange}
-            className="w-full rounded-lg border border-ink-100 bg-white px-4 py-3 text-sm outline-none focus:border-ink-900"
+            className="w-full rounded-xl border border-white/10 bg-midnight-card/80 px-4 py-3 text-sm text-white outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/50 transition"
           >
-            <option value="">Select a category</option>
+            <option value="" className="bg-midnight-surface text-slate-400">Select a category</option>
             {categories.map((cat) => (
-              <option key={cat._id} value={cat._id}>{cat.name}</option>
+              <option key={cat._id} value={cat._id} className="bg-midnight-surface text-white">
+                {cat.name}
+              </option>
             ))}
           </select>
         </label>
       </div>
 
-      <label className="mt-5 block">
-        <p className="mb-1 text-sm font-medium text-charcoal">Thumbnail {!editCourse && <sup className="text-rose-600">*</sup>}</p>
-        <div className="flex items-center gap-4">
+      <div className="block">
+        <p className="mb-2 text-sm font-medium text-slate-300">
+          Course Thumbnail {!editCourse && <sup className="text-pink-500">*</sup>}
+        </p>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 rounded-xl border border-dashed border-white/15 bg-midnight-surface/40">
           {thumbnailPreview && (
-            <img src={thumbnailPreview} alt="preview" className="h-20 w-32 rounded-lg object-cover" />
+            <img
+              src={thumbnailPreview}
+              alt="preview"
+              className="h-20 w-32 rounded-lg object-cover border border-white/10 shadow-md"
+            />
           )}
           <input
             type="file"
             accept="image/*"
             onChange={handleThumbnail}
-            className="block w-full text-sm text-charcoal-dim file:mr-4 file:rounded-lg file:border-0 file:bg-ink-50 file:px-4 file:py-2 file:text-sm file:font-medium file:text-ink-900 hover:file:bg-ink-100"
+            className="block w-full text-sm text-slate-400 file:mr-4 file:rounded-xl file:border-0 file:bg-white/10 file:px-4 file:py-2 file:text-sm file:font-medium file:text-cyan-300 hover:file:bg-white/15 file:cursor-pointer transition"
           />
         </div>
-      </label>
+      </div>
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="mt-6 rounded-lg bg-ink-900 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-ink-800 disabled:opacity-60"
-      >
-        {loading ? "Saving..." : "Next"}
-      </button>
+      <div className="flex justify-end pt-2">
+        <button
+          type="submit"
+          disabled={loading}
+          className="aurora-btn px-6 py-2.5 text-sm font-semibold text-white transition disabled:opacity-50"
+        >
+          {loading ? "Saving..." : editCourse ? "Save & Next" : "Next"}
+        </button>
+      </div>
     </form>
   )
 }

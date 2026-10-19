@@ -66,10 +66,14 @@ exports.categoryPageDetails = async (req, res) => {
     // Get category id
     const { categoryId } = req.body || {};
 
-    // Get selected category and populate courses
+    // Get selected category and populate published courses with instructor and ratings
     const selectedCategory = await category.findById(categoryId)
-                                .populate("courses")
-                                .exec();
+      .populate({
+        path: "courses",
+        match: { status: "Published" },
+        populate: [{ path: "instructor" }, { path: "ratingAndReviews" }],
+      })
+      .exec();
 
     if (!selectedCategory) {
       return res.status(404).json({
@@ -85,16 +89,17 @@ exports.categoryPageDetails = async (req, res) => {
       .populate({
         path: "courses",
         match: { status: "Published" },
+        populate: [{ path: "instructor" }, { path: "ratingAndReviews" }],
       })
       .exec();
 
-    // Get top-selling (or all published) courses
+    // Get all top published courses sorted by date
     const allCourses = await Course.find({
       status: "Published",
     })
       .populate("instructor")
       .populate("ratingAndReviews")
-      .sort({ sold: -1 }); // if sold field exists
+      .sort({ createdAt: -1 });
 
     return res.status(200).json({
       success: true,

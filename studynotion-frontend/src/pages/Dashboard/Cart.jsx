@@ -7,20 +7,23 @@ export default function Cart() {
   const { cart, totalItems } = useSelector((state) => state.cart)
 
   return (
-    <div>
-      <h1 className="font-display text-2xl font-bold text-charcoal">My Cart</h1>
-      <p className="mt-1 text-sm text-charcoal-dim">{totalItems} course{totalItems !== 1 ? "s" : ""} in cart</p>
+    <div className="space-y-6">
+      <div className="border-b border-white/5 pb-4">
+        <span className="text-xs font-bold uppercase tracking-wider text-aurora-cyan">Checkout</span>
+        <h1 className="font-display text-2xl font-black text-white sm:text-3xl">My Cart</h1>
+        <p className="mt-1 text-xs text-slate-400">{totalItems} course{totalItems !== 1 ? "s" : ""} selected for enrollment</p>
+      </div>
 
       {cart.length === 0 ? (
-        <div className="mt-8 rounded-2xl border border-ink-100 bg-white p-10 text-center">
-          <p className="text-charcoal-dim">Your cart is empty.</p>
-          <Link to="/catalog" className="mt-4 inline-block text-sm font-medium text-ink-900 hover:underline">
-            Browse the catalog
+        <div className="rounded-3xl border border-white/10 bg-midnight-surface/50 p-12 text-center backdrop-blur-xl">
+          <p className="text-slate-400">Your cart is empty.</p>
+          <Link to="/catalog" className="aurora-btn mt-6 inline-block rounded-xl px-6 py-2.5 text-xs font-bold text-white">
+            Browse Catalog
           </Link>
         </div>
       ) : (
-        <div className="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-3">
-          <div className="rounded-2xl border border-ink-100 bg-white p-6 lg:col-span-2">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+          <div className="glass-card rounded-3xl border border-white/10 p-6 lg:col-span-2">
             {cart.map((course) => (
               <RenderCartCourses key={course._id} course={course} />
             ))}

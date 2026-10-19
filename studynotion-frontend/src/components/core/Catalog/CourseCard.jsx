@@ -8,34 +8,43 @@ export default function CourseCard({ course }) {
   return (
     <Link
       to={`/courses/${course._id}`}
-      className="folded-corner group block overflow-hidden rounded-2xl border border-ink-100 bg-white transition hover:-translate-y-1 hover:shadow-lg"
+      className="glass-card group flex flex-col justify-between overflow-hidden rounded-2xl border border-white/10 hover:border-aurora-indigo/50"
     >
-      <div className="aspect-video w-full overflow-hidden bg-ink-50">
-        {course.thumbnail ? (
-          <img
-            src={course.thumbnail}
-            alt={course.courseName}
-            className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
-          />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center text-charcoal-dim">No image</div>
-        )}
-      </div>
-      <div className="p-4">
-        <h3 className="line-clamp-2 font-display text-base font-semibold text-charcoal">
-          {course.courseName}
-        </h3>
-        <p className="mt-1 text-xs text-charcoal-dim">
-          {course.instructor?.firstName} {course.instructor?.lastName}
-        </p>
-        <div className="mt-2 flex items-center gap-1 text-sm">
-          <span className="font-semibold text-amber-600">{avgRating || "New"}</span>
-          {avgRating > 0 && <FaStar className="text-amber-500" size={12} />}
-          <span className="text-xs text-charcoal-dim">
-            ({course.ratingAndReviews?.length || 0})
-          </span>
+      <div>
+        <div className="relative aspect-video w-full overflow-hidden bg-midnight-surface">
+          {course.thumbnail ? (
+            <img
+              src={course.thumbnail}
+              alt={course.courseName}
+              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center text-xs text-slate-500">No thumbnail</div>
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-midnight-card/80 via-transparent to-transparent opacity-60" />
         </div>
-        <p className="mt-2 font-display text-lg font-bold text-ink-900">₹{course.price}</p>
+
+        <div className="p-4">
+          <h3 className="line-clamp-2 font-display text-base font-bold text-white group-hover:text-aurora-cyan transition-colors">
+            {course.courseName}
+          </h3>
+          <p className="mt-1 text-xs text-slate-400">
+            {course.instructor?.firstName ? `${course.instructor.firstName} ${course.instructor?.lastName || ""}` : "Instructor"}
+          </p>
+
+          <div className="mt-2.5 flex items-center gap-1.5 text-xs">
+            <span className="font-bold text-amber-400">{avgRating || "New"}</span>
+            {avgRating > 0 && <FaStar className="text-amber-400 text-xs" />}
+            <span className="text-slate-500">
+              ({course.ratingAndReviews?.length || 0})
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div className="border-t border-white/5 p-4 pt-3 flex items-center justify-between">
+        <span className="text-xs uppercase tracking-wider text-slate-500 font-semibold">Price</span>
+        <p className="font-display text-lg font-extrabold text-white">₹{course.price}</p>
       </div>
     </Link>
   )

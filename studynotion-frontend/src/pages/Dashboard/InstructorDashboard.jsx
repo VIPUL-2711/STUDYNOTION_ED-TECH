@@ -36,36 +36,49 @@ export default function InstructorDashboard() {
   ]
 
   return (
-    <div>
-      <h1 className="font-display text-2xl font-bold text-charcoal">
-        Hi {user?.firstName}, let's build something great
-      </h1>
+    <div className="space-y-8">
+      <div className="border-b border-white/5 pb-4">
+        <span className="text-xs font-bold uppercase tracking-wider text-aurora-cyan">Instructor Analytics</span>
+        <h1 className="font-display text-2xl font-black text-white sm:text-3xl">
+          Welcome back, {user?.firstName}
+        </h1>
+        <p className="mt-1 text-xs text-slate-400">Here is your high-level overview of enrollment performance and revenue.</p>
+      </div>
 
-      <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {stats.map((stat) => (
-          <div key={stat.label} className="rounded-2xl border border-ink-100 bg-white p-6">
-            <p className="text-sm text-charcoal-dim">{stat.label}</p>
-            <p className="mt-2 font-display text-2xl font-bold text-charcoal">{stat.value}</p>
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {stats.map((stat, i) => (
+          <div key={stat.label} className="glass-card rounded-3xl border border-white/10 p-6">
+            <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">{stat.label}</p>
+            <p className={`mt-3 font-display text-3xl font-black ${stat.label.includes("earnings") ? "aurora-gradient-text" : "text-white"}`}>
+              {stat.value}
+            </p>
           </div>
         ))}
       </div>
 
-      <div className="mt-8 rounded-2xl border border-ink-100 bg-white p-6">
-        <div className="flex items-center justify-between">
-          <h2 className="font-display text-lg font-semibold text-charcoal">Your courses</h2>
-          <Link to="/dashboard/my-courses" className="text-sm font-medium text-ink-900 hover:underline">
-            View all
+      <div className="glass-card rounded-3xl border border-white/10 p-7">
+        <div className="flex items-center justify-between border-b border-white/5 pb-4">
+          <h2 className="font-display text-lg font-bold text-white">Course Performance Summary</h2>
+          <Link to="/dashboard/my-courses" className="text-xs font-semibold text-aurora-cyan hover:underline">
+            View all courses &rarr;
           </Link>
         </div>
 
         {courses.length === 0 ? (
-          <p className="mt-4 text-sm text-charcoal-dim">Create your first course to see stats here.</p>
+          <div className="py-10 text-center">
+            <p className="text-sm text-slate-400">Publish your first curriculum to start tracking enrollment data.</p>
+          </div>
         ) : (
-          <div className="mt-4 space-y-3">
+          <div className="mt-4 divide-y divide-white/5">
             {courses.slice(0, 5).map((course) => (
-              <div key={course._id} className="flex items-center justify-between border-b border-ink-50 py-3 last:border-none">
-                <span className="text-sm font-medium text-charcoal">{course.courseName}</span>
-                <span className="text-xs text-charcoal-dim">{course.studentsEnrolled?.length || 0} students</span>
+              <div key={course._id} className="flex items-center justify-between py-4">
+                <span className="text-sm font-semibold text-white truncate max-w-md">{course.courseName}</span>
+                <div className="flex items-center gap-4 text-xs font-mono text-slate-400">
+                  <span className="bg-white/5 px-2.5 py-1 rounded-md border border-white/5 text-aurora-cyan font-bold">
+                    {course.studentsEnrolled?.length || 0} students
+                  </span>
+                  <span className="text-white font-bold">₹{Number(course.price || 0) * (course.studentsEnrolled?.length || 0)}</span>
+                </div>
               </div>
             ))}
           </div>

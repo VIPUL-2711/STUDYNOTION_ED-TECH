@@ -3,13 +3,13 @@ import Sidebar from "../components/core/Dashboard/Sidebar"
 
 export default function Dashboard() {
   return (
-    <div className="flex">
+    <div className="relative flex min-h-[calc(100vh-3.5rem)] flex-col md:flex-row bg-midnight">
       <Sidebar />
-      <div className="w-full flex-1 px-6 py-10 sm:px-10">
+      <main className="w-full flex-1 px-4 py-8 sm:px-8 md:px-10">
         <div className="mx-auto max-w-5xl">
           <Outlet />
         </div>
-      </div>
+      </main>
     </div>
   )
 }

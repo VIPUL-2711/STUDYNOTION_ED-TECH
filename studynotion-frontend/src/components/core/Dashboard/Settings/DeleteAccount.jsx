@@ -12,12 +12,14 @@ export default function DeleteAccount() {
   const [confirmationModal, setConfirmationModal] = useState(null)
 
   return (
-    <div className="mt-6 flex items-start gap-4 rounded-2xl border border-rose-200 bg-rose-50 p-6">
-      <FiTrash2 className="mt-1 shrink-0 text-xl text-rose-600" />
+    <div className="flex items-start gap-4 rounded-3xl border border-rose-500/25 bg-rose-950/20 p-7 backdrop-blur-xl">
+      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-rose-500/20 border border-rose-500/30 text-rose-400">
+        <FiTrash2 className="text-lg" />
+      </div>
       <div className="flex-1">
-        <h2 className="font-display text-lg font-semibold text-rose-700">Delete account</h2>
-        <p className="mt-1 text-sm text-rose-700/80">
-          This permanently deletes your account and profile. This action can't be undone.
+        <h2 className="font-display text-lg font-bold text-rose-300">Delete Account Permanently</h2>
+        <p className="mt-1 text-sm text-rose-200/70 leading-relaxed">
+          Once you delete your account, all course enrollments, lecture progress, personal profiles, and certificates will be irrevocably deleted.
         </p>
         <button
           onClick={() =>
@@ -33,7 +35,7 @@ export default function DeleteAccount() {
               btn2Handler: () => setConfirmationModal(null),
             })
           }
-          className="mt-4 rounded-lg bg-rose-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-rose-700"
+          className="mt-4 rounded-xl bg-rose-600 px-5 py-2.5 text-xs font-bold text-white transition hover:bg-rose-500 shadow-lg shadow-rose-950/50"
         >
           Delete my account
         </button>

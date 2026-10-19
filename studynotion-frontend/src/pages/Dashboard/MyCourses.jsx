@@ -43,52 +43,63 @@ export default function MyCourses() {
   if (loading) return <Spinner />
 
   return (
-    <div>
-      <div className="flex items-center justify-between">
-        <h1 className="font-display text-2xl font-bold text-charcoal">My Courses</h1>
+    <div className="space-y-6">
+      <div className="flex items-center justify-between border-b border-white/5 pb-4">
+        <div>
+          <span className="text-xs font-bold uppercase tracking-wider text-aurora-cyan">Instructor Center</span>
+          <h1 className="font-display text-2xl font-black text-white sm:text-3xl">My Courses</h1>
+        </div>
         <button
           onClick={() => navigate("/dashboard/add-course")}
-          className="flex items-center gap-2 rounded-lg bg-ink-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-ink-800"
+          className="aurora-btn flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-bold text-white"
         >
           <FiPlus /> New course
         </button>
       </div>
 
       {courses.length === 0 ? (
-        <div className="mt-8 rounded-2xl border border-ink-100 bg-white p-10 text-center">
-          <p className="text-charcoal-dim">You haven't created any courses yet.</p>
+        <div className="rounded-3xl border border-white/10 bg-midnight-surface/50 p-12 text-center backdrop-blur-xl">
+          <p className="text-slate-400">You haven't created any courses yet.</p>
+          <button
+            onClick={() => navigate("/dashboard/add-course")}
+            className="aurora-btn mt-6 inline-flex items-center gap-2 rounded-xl px-6 py-2.5 text-xs font-bold text-white"
+          >
+            <FiPlus /> Create Your First Course
+          </button>
         </div>
       ) : (
-        <div className="mt-6 space-y-4">
+        <div className="space-y-4">
           {courses.map((course) => (
-            <div key={course._id} className="flex flex-col gap-4 rounded-2xl border border-ink-100 bg-white p-5 sm:flex-row sm:items-center">
-              <img src={course.thumbnail} alt={course.courseName} className="h-24 w-full rounded-xl object-cover sm:w-40" />
-              <div className="flex-1">
+            <div key={course._id} className="glass-card flex flex-col gap-5 rounded-2xl border border-white/10 p-5 sm:flex-row sm:items-center">
+              <img src={course.thumbnail} alt={course.courseName} className="h-24 w-full rounded-xl object-cover border border-white/10 sm:w-44 shrink-0" />
+              <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-3">
-                  <h3 className="font-display font-semibold text-charcoal">{course.courseName}</h3>
+                  <h3 className="font-display font-bold text-white text-base truncate">{course.courseName}</h3>
                   <span
-                    className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                    className={`rounded-full px-2.5 py-0.5 text-[11px] font-bold ${
                       course.status === "Published"
-                        ? "bg-emerald-100 text-emerald-700"
-                        : "bg-amber-100 text-amber-700"
+                        ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/30"
+                        : "bg-amber-500/15 text-amber-400 border border-amber-500/30"
                     }`}
                   >
                     {course.status || "Draft"}
                   </span>
                 </div>
-                <p className="mt-1 line-clamp-1 text-xs text-charcoal-dim">{course.courseDescription}</p>
-                <p className="mt-2 font-display font-semibold text-ink-900">₹{course.price}</p>
+                <p className="mt-1 line-clamp-1 text-xs text-slate-400">{course.courseDescription}</p>
+                <p className="mt-2.5 font-display text-lg font-black text-white">₹{course.price}</p>
               </div>
-              <div className="flex shrink-0 items-center gap-3">
+              <div className="flex shrink-0 items-center gap-2.5">
                 <Link
                   to={`/dashboard/edit-course/${course._id}`}
-                  className="rounded-lg border border-ink-100 p-2.5 text-charcoal-dim hover:border-ink-900 hover:text-charcoal"
+                  className="rounded-xl border border-white/10 bg-white/5 p-2.5 text-slate-300 transition hover:border-aurora-cyan/50 hover:bg-white/10 hover:text-white"
+                  title="Edit Course"
                 >
                   <FiEdit2 />
                 </Link>
                 <button
                   onClick={() => confirmDelete(course._id)}
-                  className="rounded-lg border border-ink-100 p-2.5 text-charcoal-dim hover:border-rose-600 hover:text-rose-600"
+                  className="rounded-xl border border-white/10 bg-white/5 p-2.5 text-rose-400 transition hover:border-rose-500/50 hover:bg-rose-500/10 hover:text-rose-300"
+                  title="Delete Course"
                 >
                   <FiTrash2 />
                 </button>

@@ -11,18 +11,18 @@ const mailSender= async (email,title,body)=>{
         pass:process.env.MAIL_PASS,
       }
     })
-    let  info = await transporter.sendMail({
-      from:'Studynotion ||  by-VIPULVERMA',
-      to:`${email}`,
-      subject:`${title}`,
-      html:`${body}`,
+    let info = await transporter.sendMail({
+      from: `StudyNotion <${process.env.MAIL_USER || "noreply@studynotion.com"}>`,
+      to: `${email}`,
+      subject: `${title}`,
+      html: `${body}`,
     })
-    console.log(info);
+    console.log("Email sent:", info.messageId);
     return info;
-    
   }
   catch(error){
-    console.log(error.message);
+    console.error("mailSender error:", error.message);
+    throw error;
   }
 }
 

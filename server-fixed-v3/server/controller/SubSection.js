@@ -7,12 +7,12 @@ exports.createSubsection=async (req,res)=>{
     //fetch the data 
     const {sectionId,title,description, timeDuration} = req.body || {};
     //extract the files 
-    const video = req.files.videoFile;
+    const video = req.files ? req.files.videoFile : null;
     //validation //
     if(!sectionId || !title || !description || !timeDuration || !video){
       return res.status(400).json({
         success:false,
-        message:"these feilds are required to fill ",
+        message:"All fields including video file are required",
       });
     }
     //upload to cloudinary

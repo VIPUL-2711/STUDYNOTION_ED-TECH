@@ -43,14 +43,17 @@ export default function SignupForm() {
 
   return (
     <div className="mt-6 w-full">
-      <div className="mb-6 flex w-fit rounded-full bg-ink-50 p-1">
+      {/* Account Type Toggle */}
+      <div className="mb-6 flex w-fit rounded-2xl bg-white/5 border border-white/10 p-1 shadow-inner">
         {[ACCOUNT_TYPE.STUDENT, ACCOUNT_TYPE.INSTRUCTOR].map((type) => (
           <button
             key={type}
             type="button"
             onClick={() => setAccountType(type)}
-            className={`rounded-full px-5 py-1.5 text-sm font-medium transition ${
-              accountType === type ? "bg-ink-900 text-white" : "text-charcoal-dim"
+            className={`rounded-xl px-5 py-2 text-xs font-bold transition-all ${
+              accountType === type
+                ? "aurora-btn text-white"
+                : "text-slate-400 hover:text-white"
             }`}
           >
             {type}
@@ -58,10 +61,10 @@ export default function SignupForm() {
         ))}
       </div>
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-y-5">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-y-4">
         <div className="flex gap-x-4">
           <label className="block w-1/2">
-            <p className="mb-1 text-sm font-medium text-charcoal">First name <sup className="text-rose-600">*</sup></p>
+            <p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-slate-400">First name <sup className="text-rose-500">*</sup></p>
             <input
               required
               type="text"
@@ -69,11 +72,11 @@ export default function SignupForm() {
               value={formData.firstName}
               onChange={handleChange}
               placeholder="First name"
-              className="w-full rounded-lg border border-ink-100 bg-white px-4 py-3 text-sm outline-none focus:border-ink-900"
+              className="w-full rounded-xl border border-white/10 bg-midnight-card px-4 py-3 text-sm text-white placeholder-slate-500 outline-none transition focus:border-aurora-cyan/50 focus:ring-1 focus:ring-aurora-cyan/20"
             />
           </label>
           <label className="block w-1/2">
-            <p className="mb-1 text-sm font-medium text-charcoal">Last name <sup className="text-rose-600">*</sup></p>
+            <p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-slate-400">Last name <sup className="text-rose-500">*</sup></p>
             <input
               required
               type="text"
@@ -81,13 +84,13 @@ export default function SignupForm() {
               value={formData.lastName}
               onChange={handleChange}
               placeholder="Last name"
-              className="w-full rounded-lg border border-ink-100 bg-white px-4 py-3 text-sm outline-none focus:border-ink-900"
+              className="w-full rounded-xl border border-white/10 bg-midnight-card px-4 py-3 text-sm text-white placeholder-slate-500 outline-none transition focus:border-aurora-cyan/50 focus:ring-1 focus:ring-aurora-cyan/20"
             />
           </label>
         </div>
 
         <label className="block">
-          <p className="mb-1 text-sm font-medium text-charcoal">Email address <sup className="text-rose-600">*</sup></p>
+          <p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-slate-400">Email address <sup className="text-rose-500">*</sup></p>
           <input
             required
             type="email"
@@ -95,12 +98,12 @@ export default function SignupForm() {
             value={formData.email}
             onChange={handleChange}
             placeholder="you@example.com"
-            className="w-full rounded-lg border border-ink-100 bg-white px-4 py-3 text-sm outline-none focus:border-ink-900"
+            className="w-full rounded-xl border border-white/10 bg-midnight-card px-4 py-3 text-sm text-white placeholder-slate-500 outline-none transition focus:border-aurora-cyan/50 focus:ring-1 focus:ring-aurora-cyan/20"
           />
         </label>
 
         <label className="block">
-          <p className="mb-1 text-sm font-medium text-charcoal">Contact number <sup className="text-rose-600">*</sup></p>
+          <p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-slate-400">Contact number <sup className="text-rose-500">*</sup></p>
           <input
             required
             type="tel"
@@ -108,13 +111,13 @@ export default function SignupForm() {
             value={formData.contactNumber}
             onChange={handleChange}
             placeholder="9999999999"
-            className="w-full rounded-lg border border-ink-100 bg-white px-4 py-3 text-sm outline-none focus:border-ink-900"
+            className="w-full rounded-xl border border-white/10 bg-midnight-card px-4 py-3 text-sm text-white placeholder-slate-500 outline-none transition focus:border-aurora-cyan/50 focus:ring-1 focus:ring-aurora-cyan/20"
           />
         </label>
 
         <div className="flex gap-x-4">
           <label className="relative block w-1/2">
-            <p className="mb-1 text-sm font-medium text-charcoal">Password <sup className="text-rose-600">*</sup></p>
+            <p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-slate-400">Password <sup className="text-rose-500">*</sup></p>
             <input
               required
               type={showPassword ? "text" : "password"}
@@ -122,14 +125,14 @@ export default function SignupForm() {
               value={formData.password}
               onChange={handleChange}
               placeholder="Password"
-              className="w-full rounded-lg border border-ink-100 bg-white px-4 py-3 text-sm outline-none focus:border-ink-900"
+              className="w-full rounded-xl border border-white/10 bg-midnight-card px-4 py-3 text-sm text-white placeholder-slate-500 outline-none transition focus:border-aurora-cyan/50 focus:ring-1 focus:ring-aurora-cyan/20"
             />
-            <span onClick={() => setShowPassword((p) => !p)} className="absolute right-4 top-[42px] cursor-pointer text-charcoal-dim">
+            <span onClick={() => setShowPassword((p) => !p)} className="absolute right-4 top-[40px] cursor-pointer text-slate-400 hover:text-white transition-colors">
               {showPassword ? <AiOutlineEyeInvisible size={18} /> : <AiOutlineEye size={18} />}
             </span>
           </label>
           <label className="relative block w-1/2">
-            <p className="mb-1 text-sm font-medium text-charcoal">Confirm password <sup className="text-rose-600">*</sup></p>
+            <p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-slate-400">Confirm password <sup className="text-rose-500">*</sup></p>
             <input
               required
               type={showConfirmPassword ? "text" : "password"}
@@ -137,9 +140,9 @@ export default function SignupForm() {
               value={formData.confirmPassword}
               onChange={handleChange}
               placeholder="Confirm password"
-              className="w-full rounded-lg border border-ink-100 bg-white px-4 py-3 text-sm outline-none focus:border-ink-900"
+              className="w-full rounded-xl border border-white/10 bg-midnight-card px-4 py-3 text-sm text-white placeholder-slate-500 outline-none transition focus:border-aurora-cyan/50 focus:ring-1 focus:ring-aurora-cyan/20"
             />
-            <span onClick={() => setShowConfirmPassword((p) => !p)} className="absolute right-4 top-[42px] cursor-pointer text-charcoal-dim">
+            <span onClick={() => setShowConfirmPassword((p) => !p)} className="absolute right-4 top-[40px] cursor-pointer text-slate-400 hover:text-white transition-colors">
               {showConfirmPassword ? <AiOutlineEyeInvisible size={18} /> : <AiOutlineEye size={18} />}
             </span>
           </label>
@@ -147,7 +150,7 @@ export default function SignupForm() {
 
         <button
           type="submit"
-          className="mt-2 rounded-lg bg-ink-900 py-3 text-sm font-semibold text-white transition hover:bg-ink-800"
+          className="aurora-btn mt-3 rounded-xl py-3.5 text-sm font-bold text-white"
         >
           Create account
         </button>

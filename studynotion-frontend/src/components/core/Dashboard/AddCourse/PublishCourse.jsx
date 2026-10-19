@@ -24,35 +24,38 @@ export default function PublishCourse() {
   }
 
   return (
-    <div className="rounded-2xl border border-ink-100 bg-white p-6">
-      <h2 className="font-display text-lg font-semibold text-charcoal">Publish your course</h2>
-      <p className="mt-1 text-sm text-charcoal-dim">
-        Published courses appear in the catalog and can be purchased by students.
+    <div className="glass-card rounded-2xl border border-white/10 p-6 md:p-8">
+      <h2 className="font-display text-xl font-bold text-white">Publish Your Course</h2>
+      <p className="mt-1 text-sm text-slate-400">
+        Published courses appear in the live catalog and can be discovered and purchased by students worldwide.
       </p>
 
-      <label className="mt-6 flex items-center gap-3">
+      <label className="mt-6 flex items-center gap-3.5 p-4 rounded-xl border border-white/10 bg-midnight-surface/50 cursor-pointer hover:border-cyan-500/40 transition">
         <input
           type="checkbox"
           checked={publish}
           onChange={(e) => setPublish(e.target.checked)}
-          className="h-4 w-4 accent-ink-900"
+          className="h-5 w-5 rounded border-white/20 accent-cyan-500 cursor-pointer"
         />
-        <span className="text-sm font-medium text-charcoal">Make this course public</span>
+        <div>
+          <span className="text-sm font-semibold text-white">Make this course public</span>
+          <p className="text-xs text-slate-400">Uncheck to keep it in Draft mode until you are ready to launch.</p>
+        </div>
       </label>
 
-      <div className="mt-8 flex justify-between">
+      <div className="mt-8 flex justify-between pt-4 border-t border-white/10">
         <button
           onClick={() => dispatch(setStep(2))}
-          className="rounded-lg border border-ink-100 px-6 py-2.5 text-sm font-medium text-charcoal-dim hover:border-ink-900"
+          className="rounded-xl border border-white/15 px-6 py-2.5 text-sm font-medium text-slate-300 hover:bg-white/5 hover:text-white transition"
         >
           Back
         </button>
         <button
           onClick={handleFinish}
           disabled={saving}
-          className="rounded-lg bg-emerald-500 px-6 py-2.5 text-sm font-semibold text-white hover:bg-emerald-600 disabled:opacity-60"
+          className="aurora-btn px-6 py-2.5 text-sm font-semibold text-white disabled:opacity-50"
         >
-          {saving ? "Saving..." : "Finish"}
+          {saving ? "Saving..." : publish ? "Publish Course" : "Save as Draft"}
         </button>
       </div>
     </div>

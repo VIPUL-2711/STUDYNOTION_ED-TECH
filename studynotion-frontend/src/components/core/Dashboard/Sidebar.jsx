@@ -54,37 +54,73 @@ export default function Sidebar() {
 
   return (
     <>
-      <aside className="hidden h-[calc(100vh-64px)] w-64 shrink-0 flex-col border-r border-ink-100 bg-white sm:flex">
-        <nav className="flex flex-1 flex-col gap-1 p-4">
-          {links.map((link) => (
-            <Link
-              key={link.path}
-              to={link.path}
-              className={`flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium transition ${
-                matchRoute(link.path)
-                  ? "bg-ink-50 text-ink-900"
-                  : "text-charcoal-dim hover:bg-ink-50 hover:text-charcoal"
-              }`}
-            >
-              <link.icon size={18} />
-              {link.name}
-            </Link>
-          ))}
+      {/* Mobile Horizontal Navigation Tabs */}
+      <div className="flex sm:hidden overflow-x-auto gap-2 p-3 border-b border-white/10 bg-midnight-surface/90 backdrop-blur-xl no-scrollbar w-full">
+        {links.map((link) => (
+          <Link
+            key={link.path}
+            to={link.path}
+            className={`flex shrink-0 items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-semibold transition ${
+              matchRoute(link.path)
+                ? "bg-aurora-indigo/20 text-white border border-aurora-cyan/40"
+                : "text-slate-400 bg-white/5 hover:text-white"
+            }`}
+          >
+            <link.icon size={15} className={matchRoute(link.path) ? "text-aurora-cyan" : ""} />
+            {link.name}
+          </Link>
+        ))}
+        <Link
+          to="/dashboard/settings"
+          className={`flex shrink-0 items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-semibold transition ${
+            matchRoute("/dashboard/settings")
+              ? "bg-aurora-indigo/20 text-white border border-aurora-cyan/40"
+              : "text-slate-400 bg-white/5 hover:text-white"
+          }`}
+        >
+          <VscSettingsGear size={15} />
+          Settings
+        </Link>
+      </div>
+
+      {/* Desktop Sidebar */}
+      <aside className="hidden h-[calc(100vh-64px)] w-64 shrink-0 flex-col border-r border-white/10 bg-midnight-surface/60 backdrop-blur-xl sm:flex sticky top-16">
+        <nav className="flex flex-1 flex-col gap-1.5 p-4">
+          <p className="px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-slate-500">Navigation</p>
+          {links.map((link) => {
+            const isActive = matchRoute(link.path)
+            return (
+              <Link
+                key={link.path}
+                to={link.path}
+                className={`group flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all ${
+                  isActive
+                    ? "bg-gradient-to-r from-aurora-indigo/20 via-aurora-indigo/10 to-transparent text-white border-l-2 border-aurora-cyan shadow-sm shadow-indigo-950"
+                    : "text-slate-400 hover:bg-white/5 hover:text-slate-200"
+                }`}
+              >
+                <link.icon size={18} className={`transition-colors ${isActive ? "text-aurora-cyan" : "group-hover:text-aurora-cyan"}`} />
+                {link.name}
+              </Link>
+            )
+          })}
+
+          <div className="my-2 border-t border-white/5" />
 
           <Link
             to="/dashboard/settings"
-            className={`flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium transition ${
+            className={`group flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all ${
               matchRoute("/dashboard/settings")
-                ? "bg-ink-50 text-ink-900"
-                : "text-charcoal-dim hover:bg-ink-50 hover:text-charcoal"
+                ? "bg-gradient-to-r from-aurora-indigo/20 to-transparent text-white border-l-2 border-aurora-cyan shadow-sm shadow-indigo-950"
+                : "text-slate-400 hover:bg-white/5 hover:text-slate-200"
             }`}
           >
-            <VscSettingsGear size={18} />
+            <VscSettingsGear size={18} className="group-hover:text-aurora-cyan transition-colors" />
             Settings
           </Link>
         </nav>
 
-        <div className="border-t border-ink-100 p-4">
+        <div className="border-t border-white/10 p-4">
           <button
             onClick={() =>
               setConfirmationModal({
@@ -99,7 +135,7 @@ export default function Sidebar() {
                 btn2Handler: () => setConfirmationModal(null),
               })
             }
-            className="flex w-full items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium text-rose-600 transition hover:bg-rose-50"
+            className="flex w-full items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-semibold text-rose-400 transition hover:bg-rose-500/10 hover:text-rose-300"
           >
             <VscSignOut size={18} />
             Log out

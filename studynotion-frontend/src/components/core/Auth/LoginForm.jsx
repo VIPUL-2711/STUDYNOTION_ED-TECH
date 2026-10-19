@@ -23,7 +23,7 @@ export default function LoginForm() {
   return (
     <form onSubmit={handleSubmit} className="mt-8 flex w-full flex-col gap-y-5">
       <label className="block">
-        <p className="mb-1 text-sm font-medium text-charcoal">Email address <sup className="text-rose-600">*</sup></p>
+        <p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-slate-400">Email address <sup className="text-rose-500">*</sup></p>
         <input
           required
           type="email"
@@ -31,12 +31,12 @@ export default function LoginForm() {
           value={formData.email}
           onChange={handleChange}
           placeholder="you@example.com"
-          className="w-full rounded-lg border border-ink-100 bg-white px-4 py-3 text-sm text-charcoal outline-none transition focus:border-ink-900"
+          className="w-full rounded-xl border border-white/10 bg-midnight-card px-4 py-3 text-sm text-white placeholder-slate-500 outline-none transition focus:border-aurora-cyan/50 focus:ring-1 focus:ring-aurora-cyan/20"
         />
       </label>
 
       <label className="relative block">
-        <p className="mb-1 text-sm font-medium text-charcoal">Password <sup className="text-rose-600">*</sup></p>
+        <p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-slate-400">Password <sup className="text-rose-500">*</sup></p>
         <input
           required
           type={showPassword ? "text" : "password"}
@@ -44,25 +44,25 @@ export default function LoginForm() {
           value={formData.password}
           onChange={handleChange}
           placeholder="Enter password"
-          className="w-full rounded-lg border border-ink-100 bg-white px-4 py-3 text-sm text-charcoal outline-none transition focus:border-ink-900"
+          className="w-full rounded-xl border border-white/10 bg-midnight-card px-4 py-3 text-sm text-white placeholder-slate-500 outline-none transition focus:border-aurora-cyan/50 focus:ring-1 focus:ring-aurora-cyan/20"
         />
         <span
           onClick={() => setShowPassword((prev) => !prev)}
-          className="absolute right-4 top-[42px] cursor-pointer text-charcoal-dim"
+          className="absolute right-4 top-[40px] cursor-pointer text-slate-400 hover:text-white transition-colors"
         >
           {showPassword ? <AiOutlineEyeInvisible size={20} /> : <AiOutlineEye size={20} />}
         </span>
         <Link to="/forgot-password">
-          <p className="mt-2 text-right text-sm text-ink-700 hover:underline">Forgot password?</p>
+          <p className="mt-2 text-right text-xs font-medium text-aurora-cyan hover:underline">Forgot password?</p>
         </Link>
       </label>
 
       <button
         type="submit"
         disabled={loading}
-        className="mt-2 rounded-lg bg-ink-900 py-3 text-sm font-semibold text-white transition hover:bg-ink-800 disabled:opacity-60"
+        className="aurora-btn mt-2 rounded-xl py-3.5 text-sm font-bold text-white disabled:opacity-50"
       >
-        {loading ? "Logging in..." : "Log in"}
+        {loading ? "Signing in..." : "Sign in to account"}
       </button>
     </form>
   )

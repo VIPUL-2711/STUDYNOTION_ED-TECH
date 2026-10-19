@@ -2,7 +2,7 @@ import RatingStars from "../../common/RatingStars"
 
 export default function ReviewCard({ review }) {
   return (
-    <div className="min-w-[300px] max-w-[300px] rounded-xl border border-ink-100 bg-white p-5">
+    <div className="glass-card min-w-[300px] max-w-[300px] rounded-2xl border border-white/10 p-5 hover:border-cyan-500/30 transition shadow-lg">
       <div className="flex items-center gap-3">
         <img
           src={
@@ -10,16 +10,16 @@ export default function ReviewCard({ review }) {
             `https://api.dicebear.com/10.x/initials/svg?seed=${review.user?.firstName}`
           }
           alt={review.user?.firstName}
-          className="h-10 w-10 rounded-full object-cover"
+          className="h-10 w-10 rounded-full object-cover ring-2 ring-cyan-500/30"
         />
         <div>
-          <p className="text-sm font-medium text-charcoal">
+          <p className="text-sm font-semibold text-white">
             {review.user?.firstName} {review.user?.lastName}
           </p>
           <RatingStars rating={review.rating} />
         </div>
       </div>
-      <p className="mt-3 line-clamp-4 text-sm text-charcoal-dim">{review.review}</p>
+      <p className="mt-3 line-clamp-4 text-sm text-slate-300 leading-relaxed">{review.review}</p>
     </div>
   )
 }

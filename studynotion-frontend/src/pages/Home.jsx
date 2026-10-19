@@ -33,61 +33,78 @@ export default function Home() {
     ;(async () => {
       setLoading(true)
       const [cats, allCourses] = await Promise.all([fetchCourseCategories(), getAllCourses()])
-      setCategories(cats || [])
-      setCourses((allCourses || []).slice(0, 8))
+      setCategories(Array.isArray(cats) ? cats : [])
+      setCourses(Array.isArray(allCourses) ? allCourses.slice(0, 8) : [])
       setLoading(false)
     })()
   }, [])
 
   return (
-    <div>
-      {/* Hero */}
-      <section className="mx-auto max-w-7xl px-6 pb-20 pt-16 sm:pt-24">
+    <div className="relative">
+      {/* Hero Section */}
+      <section className="relative mx-auto max-w-7xl px-6 pb-24 pt-16 sm:pt-28 overflow-hidden">
+        {/* Ambient background blur circles */}
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-aurora-indigo/20 rounded-full blur-3xl pointer-events-none -z-10" />
+        <div className="absolute top-1/3 left-1/4 -translate-x-1/2 w-64 h-64 bg-aurora-cyan/15 rounded-full blur-3xl pointer-events-none -z-10" />
+
         <div className="mx-auto max-w-3xl text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-ink-100 bg-white px-4 py-1.5 text-xs font-medium text-charcoal-dim">
-            New cohorts opening this month
+          <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-semibold text-aurora-cyan backdrop-blur-xl shadow-inner">
+            <span className="h-1.5 w-1.5 rounded-full bg-aurora-cyan animate-pulse" />
+            Empowering the Next Generation of Builders
           </span>
-          <h1 className="mt-6 font-display text-4xl font-extrabold leading-tight text-charcoal sm:text-5xl">
-            Skills worth <span className="marker-highlight"><span>underlining</span></span>, taught by people who use them.
+
+          <h1 className="mt-8 font-display text-4xl font-extrabold tracking-tight text-white sm:text-6xl leading-[1.15]">
+            Master skills that actually matter, <span className="aurora-gradient-text">engineered</span> for your future.
           </h1>
-          <p className="mx-auto mt-5 max-w-xl text-lg text-charcoal-dim">
-            Browse hands-on courses in tech, design, and business — built by instructors, tracked lecture by lecture.
+
+          <p className="mx-auto mt-6 max-w-2xl text-lg text-slate-300 leading-relaxed">
+            Hands-on courses in software engineering, modern AI, product design, and business. Learn from industry leaders, tracked lecture by lecture.
           </p>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <Link
               to="/catalog"
-              className="flex items-center gap-2 rounded-lg bg-ink-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-ink-800"
+              className="aurora-btn flex items-center gap-2.5 rounded-xl px-7 py-3.5 text-sm font-bold text-white"
             >
-              Explore courses <FaArrowRight size={12} />
+              <span>Explore All Courses</span>
+              <FaArrowRight size={12} />
             </Link>
             <Link
               to="/signup"
-              className="rounded-lg border border-ink-100 bg-white px-6 py-3 text-sm font-semibold text-charcoal transition hover:border-ink-900"
+              className="rounded-xl border border-white/15 bg-white/5 px-7 py-3.5 text-sm font-semibold text-slate-200 backdrop-blur-xl transition hover:border-aurora-cyan/40 hover:bg-white/10 hover:text-white"
             >
-              Become an instructor
+              Become an Instructor
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Perks */}
-      <section className="border-y border-ink-100 bg-white py-16">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-6 sm:grid-cols-3">
-          {PERKS.map((perk) => (
-            <div key={perk.title}>
-              <perk.icon className="text-2xl text-amber-500" />
-              <h3 className="mt-4 font-display text-lg font-semibold text-charcoal">{perk.title}</h3>
-              <p className="mt-2 text-sm text-charcoal-dim">{perk.body}</p>
+      {/* Perks Section */}
+      <section className="relative mx-auto max-w-7xl px-6 py-12">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+          {PERKS.map((perk, i) => (
+            <div key={perk.title} className="glass-card rounded-2xl p-7 border border-white/10">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-aurora-cyan/15 to-aurora-indigo/15 border border-white/10 text-aurora-cyan text-xl mb-5">
+                <perk.icon />
+              </div>
+              <h3 className="font-display text-lg font-bold text-white">{perk.title}</h3>
+              <p className="mt-2 text-sm text-slate-400 leading-relaxed">{perk.body}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Categories */}
+      {/* Categories Section */}
       {categories.length > 0 && (
-        <section className="mx-auto max-w-7xl px-6 py-16">
-          <div className="flex items-end justify-between">
-            <h2 className="font-display text-2xl font-bold text-charcoal">Browse by category</h2>
+        <section className="mx-auto max-w-7xl px-6 py-20">
+          <div className="flex items-end justify-between border-b border-white/5 pb-4">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wider text-aurora-cyan">Browse Categories</p>
+              <h2 className="mt-1 font-display text-2xl font-extrabold text-white">Find your specialty</h2>
+            </div>
+            <Link to="/catalog" className="text-sm font-semibold text-aurora-indigo hover:text-aurora-cyan transition-colors">
+              View all &rarr;
+            </Link>
           </div>
           <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {categories.slice(0, 6).map((cat) => (
@@ -97,19 +114,24 @@ export default function Home() {
         </section>
       )}
 
-      {/* Featured courses */}
+      {/* Featured Courses Section */}
       <section className="mx-auto max-w-7xl px-6 py-16">
-        <div className="flex items-end justify-between">
-          <h2 className="font-display text-2xl font-bold text-charcoal">Featured courses</h2>
-          <Link to="/catalog" className="text-sm font-medium text-ink-900 hover:underline">
-            View all
+        <div className="flex items-end justify-between border-b border-white/5 pb-4">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-wider text-aurora-cyan">Featured Programs</p>
+            <h2 className="mt-1 font-display text-2xl font-extrabold text-white">Popular courses to start now</h2>
+          </div>
+          <Link to="/catalog" className="text-sm font-semibold text-aurora-indigo hover:text-aurora-cyan transition-colors">
+            View all courses &rarr;
           </Link>
         </div>
 
         {loading ? (
           <Spinner />
         ) : courses.length === 0 ? (
-          <p className="mt-8 text-sm text-charcoal-dim">No published courses yet — check back soon.</p>
+          <div className="mt-10 rounded-2xl border border-white/10 bg-midnight-surface/50 p-12 text-center backdrop-blur-xl">
+            <p className="text-slate-400">No published courses available yet. Check back soon!</p>
+          </div>
         ) : (
           <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {courses.map((course) => (

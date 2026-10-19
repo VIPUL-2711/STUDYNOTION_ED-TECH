@@ -1,0 +1,29 @@
+{
+  "name": "study",
+  "version": "1.0.0",
+  "description": "A full-stack e-learning platform (MERN stack) where students browse and purchase courses, instructors build and publish courses through a step-by-step wizard, and admins manage course categories. Built with a React frontend and a Node.js/Express/MongoDB backend.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently -n \"SERVER,CLIENT\" -c \"magenta,cyan\" \"npm run dev --prefix server-fixed-v3/server\" \"npm run dev --prefix studynotion-frontend\"",
+    "start": "concurrently -n \"SERVER,CLIENT\" -c \"magenta,cyan\" \"npm run start --prefix server-fixed-v3/server\" \"npm run dev --prefix studynotion-frontend\"",
+    "server": "npm run dev --prefix server-fixed-v3/server",
+    "client": "npm run dev --prefix studynotion-frontend",
+    "install:all": "npm install --prefix server-fixed-v3/server && npm install --prefix studynotion-frontend",
+    "build": "npm run build --prefix studynotion-frontend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VIPUL-2711/STUDYNOTION_ED-TECH.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/VIPUL-2711/STUDYNOTION_ED-TECH/issues"
+  },
+  "homepage": "https://github.com/VIPUL-2711/STUDYNOTION_ED-TECH#readme",
+  "devDependencies": {
+    "concurrently": "^10.0.6"
+  }
+}

@@ -82,10 +82,10 @@ exports.signUp=async (req,res)=>{
         }= req.body || {};
 
         // 2. validate data
-        if(!firstName || !lastName || !password || !email || !confirmPassword || !otp){
+        if(!firstName || !lastName || !password || !email || !confirmPassword || !otp || !accountType){
           return res.status(403).json({
             success:false,
-            message:"All feilds are required",
+            message:"All fields are required",
           })
         }
 
@@ -129,7 +129,7 @@ exports.signUp=async (req,res)=>{
           gender:null,
           dateOfBirth:null,
           about:null,
-          contactNumber:null,
+          contactNumber:contactNumber || null,
         });
 
         const user =await User.create({
@@ -142,6 +142,8 @@ exports.signUp=async (req,res)=>{
           additionalDetails:ProfileDetails._id,
           image: `https://api.dicebear.com/10.x/initials/svg?seed=${firstName}${lastName}`,
         })
+
+        user.password = undefined;
 
         return res.status(200).json({
           success:true,
@@ -194,7 +196,7 @@ exports.logIn=async (req,res)=>{
 
     //create cookie;
       const option = {
-        expires:new Date(Date.now() + 3*24*60*60*1000),
+        expires:new Date(Date.now() + 2*60*60*1000),
         httpOnly:true,
       }
       res.cookie("token",token,option).status(200).json({

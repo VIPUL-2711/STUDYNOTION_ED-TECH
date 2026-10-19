@@ -31,45 +31,59 @@ export default function Navbar() {
     return matchPath({ path: route }, location.pathname)
   }
 
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
   return (
-    <header className="sticky top-0 z-50 border-b border-ink-100 bg-paper/90 backdrop-blur">
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-midnight-bg/85 backdrop-blur-xl transition-all">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
-        <Link to="/" className="flex items-center gap-2">
-          <span className="relative font-display text-xl font-extrabold text-ink-900">
-            Study<span className="marker-highlight"><span>Notion</span></span>
+        <Link to="/" className="flex items-center gap-2 group">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-aurora-cyan via-aurora-indigo to-aurora-pink p-[1px] shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition-transform">
+            <div className="flex h-full w-full items-center justify-center rounded-[11px] bg-midnight-bg font-display text-lg font-black text-white">
+              S
+            </div>
+          </div>
+          <span className="font-display text-xl font-extrabold tracking-tight">
+            <span className="text-white">Study</span>
+            <span className="aurora-gradient-text">Notion</span>
           </span>
         </Link>
 
+        {/* Desktop Nav */}
         <nav className="hidden md:block">
-          <ul className="flex items-center gap-8 text-sm font-medium text-charcoal">
+          <ul className="flex items-center gap-8 text-sm font-medium text-slate-300">
             {NAV_LINKS.map((link, index) =>
               link.title === "Catalog" ? (
                 <li key={index} className="group relative">
-                  <div className="flex cursor-pointer items-center gap-1 py-2">
+                  <div className="flex cursor-pointer items-center gap-1.5 py-2 text-slate-300 transition hover:text-white">
                     <span>Catalog</span>
-                    <IoChevronDown className="transition group-hover:rotate-180" />
+                    <IoChevronDown className="text-xs transition-transform duration-200 group-hover:rotate-180 text-slate-400 group-hover:text-aurora-cyan" />
                   </div>
-                  <div className="invisible absolute left-1/2 top-full z-50 w-56 -translate-x-1/2 translate-y-1 rounded-xl border border-ink-100 bg-white p-2 opacity-0 shadow-xl transition-all group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
+                  <div className="invisible absolute left-1/2 top-full z-50 w-64 -translate-x-1/2 translate-y-2 rounded-2xl border border-white/10 bg-midnight-surface/95 p-3 opacity-0 shadow-2xl shadow-indigo-950/60 backdrop-blur-2xl transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
+                    <p className="px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-slate-500">Categories</p>
                     {categories.length === 0 && (
-                      <p className="px-3 py-2 text-xs text-charcoal-dim">No categories yet</p>
+                      <p className="px-3 py-2 text-xs text-slate-400">No categories yet</p>
                     )}
-                    {categories.map((cat) => (
-                      <Link
-                        key={cat._id}
-                        to={`/catalog/${cat._id}`}
-                        className="block rounded-lg px-3 py-2 text-sm hover:bg-ink-50"
-                      >
-                        {cat.name}
-                      </Link>
-                    ))}
+                    <div className="max-h-72 overflow-y-auto space-y-1">
+                      {categories.map((cat) => (
+                        <Link
+                          key={cat._id}
+                          to={`/catalog/${cat._id}`}
+                          className="block rounded-xl px-3 py-2 text-sm text-slate-300 transition hover:bg-white/5 hover:text-white hover:border-l-2 hover:border-aurora-cyan pl-3"
+                        >
+                          {cat.name}
+                        </Link>
+                      ))}
+                    </div>
                   </div>
                 </li>
               ) : (
                 <li key={index}>
                   <Link
                     to={link.path}
-                    className={`py-2 transition hover:text-ink-900 ${
-                      matchRoute(link.path) ? "text-ink-900" : "text-charcoal-dim"
+                    className={`relative py-2 text-sm transition ${
+                      matchRoute(link.path)
+                        ? "font-semibold text-white after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-gradient-to-r after:from-aurora-cyan after:to-aurora-indigo after:rounded-full"
+                        : "text-slate-400 hover:text-slate-200"
                     }`}
                   >
                     {link.title}
@@ -82,10 +96,13 @@ export default function Navbar() {
 
         <div className="flex items-center gap-4">
           {user?.accountType !== ACCOUNT_TYPE.INSTRUCTOR && (
-            <Link to="/dashboard/cart" className="relative">
-              <AiOutlineShoppingCart className="text-2xl text-charcoal" />
+            <Link
+              to="/dashboard/cart"
+              className="relative rounded-xl border border-white/10 p-2 text-slate-300 transition hover:border-aurora-indigo/50 hover:bg-white/5 hover:text-white"
+            >
+              <AiOutlineShoppingCart className="text-xl" />
               {totalItems > 0 && (
-                <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-amber-500 text-xs font-semibold text-white">
+                <span className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-gradient-to-r from-aurora-indigo to-aurora-pink text-[11px] font-bold text-white shadow-md shadow-pink-500/30">
                   {totalItems}
                 </span>
               )}
@@ -93,21 +110,22 @@ export default function Navbar() {
           )}
 
           {!token && (
-            <Link
-              to="/login"
-              className="rounded-lg border border-ink-100 px-4 py-2 text-sm font-medium text-charcoal transition hover:border-ink-900"
-            >
-              Log in
-            </Link>
+            <div className="flex items-center gap-3">
+              <Link
+                to="/login"
+                className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-200 transition hover:border-white/20 hover:bg-white/10 hover:text-white"
+              >
+                Log in
+              </Link>
+              <Link
+                to="/signup"
+                className="aurora-btn rounded-xl px-4 py-2 text-sm font-semibold text-white"
+              >
+                Sign up
+              </Link>
+            </div>
           )}
-          {!token && (
-            <Link
-              to="/signup"
-              className="rounded-lg bg-ink-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-ink-800"
-            >
-              Sign up
-            </Link>
-          )}
+
           {token && <ProfileDropdown />}
         </div>
       </div>

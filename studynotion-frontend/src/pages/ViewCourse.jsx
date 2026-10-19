@@ -49,9 +49,11 @@ export default function ViewCourse() {
   if (notEnrolled) return <Navigate to={`/courses/${courseId}`} replace />
 
   return (
-    <div className="flex">
+    <div className="relative flex min-h-[calc(100vh-3.5rem)] flex-col md:flex-row bg-midnight">
       <VideoDetailsSidebar />
-      <Outlet />
+      <div className="flex-1 min-w-0">
+        <Outlet />
+      </div>
     </div>
   )
 }

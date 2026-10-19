@@ -1,4 +1,5 @@
-import { Route, Routes } from "react-router-dom"
+import { useEffect } from "react"
+import { Route, Routes, useLocation, Navigate } from "react-router-dom"
 import { useSelector } from "react-redux"
 
 import Navbar from "./components/common/Navbar"
@@ -34,11 +35,20 @@ import VideoDetails from "./components/core/ViewCourse/VideoDetails"
 
 import { ACCOUNT_TYPE } from "./utils/constants"
 
+function ScrollToTop() {
+  const { pathname } = useLocation()
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
+  return null
+}
+
 export default function App() {
   const { user } = useSelector((state) => state.profile)
 
   return (
-    <div className="flex min-h-screen flex-col bg-paper text-charcoal">
+    <div className="flex min-h-screen flex-col bg-midnight-bg text-charcoal">
+      <ScrollToTop />
       <Navbar />
       <main className="flex-1">
         <Routes>
@@ -63,6 +73,7 @@ export default function App() {
               </ProtectedRoute>
             }
           >
+            <Route index element={<Navigate to="my-profile" replace />} />
             <Route path="my-profile" element={<MyProfile />} />
             <Route path="settings" element={<Settings />} />
 

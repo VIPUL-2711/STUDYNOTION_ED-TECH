@@ -103,8 +103,8 @@ export default function SectionCard({ section }) {
   }
 
   return (
-    <div className="rounded-xl border border-ink-100 bg-white">
-      <div className="flex items-center justify-between gap-3 border-b border-ink-100 px-5 py-4">
+    <div className="rounded-xl border border-white/10 bg-midnight-surface/60 overflow-hidden">
+      <div className="flex items-center justify-between gap-3 border-b border-white/10 px-5 py-3.5 bg-white/[0.02]">
         {editingName ? (
           <input
             autoFocus
@@ -112,26 +112,26 @@ export default function SectionCard({ section }) {
             onChange={(e) => setSectionName(e.target.value)}
             onBlur={handleRenameSection}
             onKeyDown={(e) => e.key === "Enter" && handleRenameSection()}
-            className="w-full rounded-lg border border-ink-100 px-3 py-1.5 text-sm outline-none focus:border-ink-900"
+            className="w-full rounded-lg border border-cyan-500/50 bg-midnight-card px-3 py-1.5 text-sm text-white outline-none focus:ring-1 focus:ring-cyan-500"
           />
         ) : (
-          <p className="font-medium text-charcoal">{section.sectionName}</p>
+          <p className="font-semibold text-white">{section.sectionName}</p>
         )}
-        <div className="flex shrink-0 items-center gap-3 text-charcoal-dim">
-          <FiEdit2 className="cursor-pointer hover:text-charcoal" onClick={() => setEditingName(true)} />
-          <FiTrash2 className="cursor-pointer hover:text-rose-600" onClick={handleDeleteSection} />
+        <div className="flex shrink-0 items-center gap-3 text-slate-400">
+          <FiEdit2 className="cursor-pointer hover:text-cyan-400 transition" onClick={() => setEditingName(true)} />
+          <FiTrash2 className="cursor-pointer hover:text-rose-400 transition" onClick={handleDeleteSection} />
         </div>
       </div>
 
       <div className="px-5 py-3">
         {(section.subSection || []).map((sub) => (
-          <div key={sub._id} className="flex items-center justify-between gap-3 border-b border-ink-50 py-2.5 last:border-none">
-            <span className="flex items-center gap-2 text-sm text-charcoal">
-              <BsPlayCircle className="shrink-0 text-charcoal-dim" /> {sub.title}
+          <div key={sub._id} className="flex items-center justify-between gap-3 border-b border-white/5 py-2.5 last:border-none">
+            <span className="flex items-center gap-2.5 text-sm text-slate-200">
+              <BsPlayCircle className="shrink-0 text-cyan-400" /> {sub.title}
             </span>
-            <div className="flex shrink-0 items-center gap-3 text-charcoal-dim">
-              <FiEdit2 size={14} className="cursor-pointer hover:text-charcoal" onClick={() => openEditLecture(sub)} />
-              <FiTrash2 size={14} className="cursor-pointer hover:text-rose-600" onClick={() => handleDeleteLecture(sub._id)} />
+            <div className="flex shrink-0 items-center gap-3 text-slate-400">
+              <FiEdit2 size={14} className="cursor-pointer hover:text-cyan-400 transition" onClick={() => openEditLecture(sub)} />
+              <FiTrash2 size={14} className="cursor-pointer hover:text-rose-400 transition" onClick={() => handleDeleteLecture(sub._id)} />
             </div>
           </div>
         ))}
@@ -139,20 +139,20 @@ export default function SectionCard({ section }) {
         {!showLectureForm && (
           <button
             onClick={openAddLecture}
-            className="mt-3 flex items-center gap-2 text-sm font-medium text-ink-900 hover:underline"
+            className="mt-3 flex items-center gap-2 text-sm font-medium text-cyan-400 hover:text-cyan-300 transition"
           >
             <FiPlus /> Add a lecture
           </button>
         )}
 
         {showLectureForm && (
-          <form onSubmit={handleLectureSubmit} className="mt-3 space-y-3 rounded-lg bg-ink-50 p-4">
+          <form onSubmit={handleLectureSubmit} className="mt-3 space-y-3 rounded-xl border border-white/10 bg-midnight-card/90 p-4">
             <input
               required
               placeholder="Lecture title"
               value={lectureData.title}
               onChange={(e) => setLectureData((p) => ({ ...p, title: e.target.value }))}
-              className="w-full rounded-lg border border-ink-100 bg-white px-3 py-2 text-sm outline-none focus:border-ink-900"
+              className="w-full rounded-lg border border-white/10 bg-midnight-surface px-3 py-2 text-sm text-white placeholder-slate-500 outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/50 transition"
             />
             <textarea
               required
@@ -160,26 +160,26 @@ export default function SectionCard({ section }) {
               placeholder="Short description"
               value={lectureData.description}
               onChange={(e) => setLectureData((p) => ({ ...p, description: e.target.value }))}
-              className="w-full rounded-lg border border-ink-100 bg-white px-3 py-2 text-sm outline-none focus:border-ink-900"
+              className="w-full rounded-lg border border-white/10 bg-midnight-surface px-3 py-2 text-sm text-white placeholder-slate-500 outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/50 transition"
             />
             <input
               type="file"
               accept="video/*"
               onChange={(e) => setVideoFile(e.target.files[0])}
-              className="block w-full text-xs text-charcoal-dim file:mr-3 file:rounded-lg file:border-0 file:bg-white file:px-3 file:py-1.5 file:text-xs file:font-medium file:text-ink-900"
+              className="block w-full text-xs text-slate-400 file:mr-3 file:rounded-lg file:border-0 file:bg-white/10 file:px-3 file:py-1.5 file:text-xs file:font-medium file:text-cyan-300 hover:file:bg-white/15 file:cursor-pointer transition"
             />
-            <div className="flex gap-3">
+            <div className="flex items-center gap-3 pt-1">
               <button
                 type="submit"
                 disabled={saving}
-                className="rounded-lg bg-ink-900 px-4 py-2 text-xs font-semibold text-white disabled:opacity-60"
+                className="aurora-btn px-4 py-2 text-xs font-semibold text-white disabled:opacity-50"
               >
-                {saving ? "Saving..." : editingLecture ? "Update lecture" : "Save lecture"}
+                {saving ? "Saving..." : editingLecture ? "Update Lecture" : "Save Lecture"}
               </button>
               <button
                 type="button"
                 onClick={() => setShowLectureForm(false)}
-                className="rounded-lg border border-ink-100 px-4 py-2 text-xs font-medium text-charcoal-dim"
+                className="rounded-lg border border-white/15 px-4 py-2 text-xs font-medium text-slate-300 hover:bg-white/5 transition"
               >
                 Cancel
               </button>

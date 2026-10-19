@@ -45,17 +45,19 @@ export default function CourseDetails() {
     0
   )
   const avgRating = getAverageRating(course.ratingAndReviews)
-  const alreadyEnrolled = course.studentsEnrolled?.some((id) => id === user?._id)
+  const alreadyEnrolled = (course.studentsEnrolled || []).some(
+    (id) => (id?._id || id)?.toString() === user?._id?.toString()
+  )
   const alreadyInCart = cart.some((item) => item._id === course._id)
-  const isInstructorOwner = user?.accountType === ACCOUNT_TYPE.INSTRUCTOR
+  const isInstructorOwner = (course.instructor?._id || course.instructor)?.toString() === user?._id?.toString()
 
   function handleAddToCart() {
     if (!token) {
       toast.error("Please log in to add courses to your cart")
       return navigate("/login")
     }
-    if (user?.accountType === ACCOUNT_TYPE.INSTRUCTOR) {
-      toast.error("Instructors cannot purchase courses")
+    if (isInstructorOwner) {
+      toast.error("You are the instructor of this course")
       return
     }
     dispatch(addToCart(course))
@@ -66,102 +68,142 @@ export default function CourseDetails() {
       toast.error("Please log in to continue")
       return navigate("/login")
     }
+    if (isInstructorOwner) {
+      toast.error("You are the instructor of this course")
+      return
+    }
     if (!alreadyInCart) dispatch(addToCart(course))
     navigate("/dashboard/cart")
   }
 
   return (
-    <div>
-      <div className="bg-ink-950 py-14 text-white">
+    <div className="relative">
+      {/* Top Banner */}
+      <div className="relative border-b border-white/10 bg-gradient-to-b from-midnight-surface via-midnight-bg to-midnight-bg py-14">
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-6 lg:grid-cols-3">
           <div className="lg:col-span-2">
-            <h1 className="font-display text-3xl font-bold">{course.courseName}</h1>
-            <p className="mt-3 text-ink-100/80">{course.courseDescription}</p>
+            <span className="inline-block rounded-full bg-aurora-indigo/20 px-3.5 py-1 text-xs font-semibold text-aurora-cyan border border-aurora-cyan/30 mb-4">
+              Comprehensive Course
+            </span>
+            <h1 className="font-display text-3xl font-extrabold text-white sm:text-4xl leading-tight">
+              {course.courseName}
+            </h1>
+            <p className="mt-4 text-base text-slate-300 leading-relaxed max-w-3xl">
+              {course.courseDescription}
+            </p>
 
-            <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-ink-100/90">
-              <span className="flex items-center gap-1 font-semibold text-amber-400">
+            <div className="mt-6 flex flex-wrap items-center gap-5 text-sm text-slate-300">
+              <span className="flex items-center gap-1.5 font-bold text-amber-400 bg-amber-400/10 px-3 py-1 rounded-full border border-amber-400/20">
                 {avgRating || "New"} <FaStar size={12} />
-                <span className="font-normal text-ink-100/70">({course.ratingAndReviews?.length || 0} ratings)</span>
+                <span className="font-normal text-slate-400">({course.ratingAndReviews?.length || 0} reviews)</span>
               </span>
-              <span>{course.studentsEnrolled?.length || 0} students enrolled</span>
+              <span className="text-slate-400">
+                <strong className="text-white">{course.studentsEnrolled?.length || 0}</strong> students enrolled
+              </span>
             </div>
 
-            <p className="mt-2 text-sm text-ink-100/70">
-              Created by {course.instructor?.firstName} {course.instructor?.lastName}
-            </p>
-            <p className="mt-1 text-xs text-ink-100/50">
-              Last updated {formatDate(course.createdAt) || "recently"}
-            </p>
+            <div className="mt-5 flex items-center gap-3 text-xs text-slate-400">
+              <div className="flex items-center gap-2">
+                <span className="text-slate-500">Instructor:</span>
+                <span className="font-semibold text-white">
+                  {course.instructor?.firstName} {course.instructor?.lastName}
+                </span>
+              </div>
+              <span>•</span>
+              <span>Updated {formatDate(course.createdAt) || "Recently"}</span>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-6 py-12 lg:grid-cols-3">
-        <div className="lg:col-span-2">
-          <section>
-            <h2 className="font-display text-xl font-semibold text-charcoal">What you'll learn</h2>
-            <p className="mt-3 whitespace-pre-line text-charcoal-dim">{course.WhatYouWillLearn}</p>
+      {/* Main Content Area */}
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-6 py-12 lg:grid-cols-3">
+        <div className="lg:col-span-2 space-y-12">
+          {/* What You'll Learn */}
+          <section className="glass-card rounded-3xl border border-white/10 p-8">
+            <h2 className="font-display text-xl font-bold text-white mb-4">What you'll learn</h2>
+            <div className="text-slate-300 whitespace-pre-line leading-relaxed text-sm">
+              {course.WhatYouWillLearn}
+            </div>
           </section>
 
-          <section className="mt-10">
-            <div className="flex items-center justify-between">
-              <h2 className="font-display text-xl font-semibold text-charcoal">Course content</h2>
-              <span className="text-sm text-charcoal-dim">
+          {/* Course Content Accordions */}
+          <section>
+            <div className="flex items-center justify-between border-b border-white/5 pb-4">
+              <h2 className="font-display text-xl font-bold text-white">Course curriculum</h2>
+              <span className="text-xs font-semibold text-aurora-cyan bg-aurora-cyan/10 px-3 py-1 rounded-full border border-aurora-cyan/20">
                 {course.courseContent?.length || 0} sections • {totalLectures} lectures
               </span>
             </div>
-            <div className="mt-4 space-y-3">
+            <div className="mt-6 space-y-3">
               {(course.courseContent || []).map((section) => (
                 <CourseAccordionBar key={section._id} section={section} />
               ))}
               {(!course.courseContent || course.courseContent.length === 0) && (
-                <p className="text-sm text-charcoal-dim">This course doesn't have content yet.</p>
+                <p className="text-sm text-slate-400">This course doesn't have lectures yet.</p>
               )}
             </div>
           </section>
         </div>
 
+        {/* Sticky Purchase Card */}
         <aside>
-          <div className="folded-corner sticky top-24 rounded-2xl border border-ink-100 bg-white p-6 shadow-sm">
-            <div className="aspect-video overflow-hidden rounded-xl bg-ink-50">
-              {course.thumbnail && (
+          <div className="sticky top-24 rounded-3xl border border-white/15 bg-midnight-surface/80 p-6 shadow-2xl shadow-indigo-950/60 backdrop-blur-2xl">
+            <div className="aspect-video overflow-hidden rounded-2xl bg-midnight-card relative border border-white/10">
+              {course.thumbnail ? (
                 <img src={course.thumbnail} alt={course.courseName} className="h-full w-full object-cover" />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center text-xs text-slate-500">Preview</div>
               )}
             </div>
-            <p className="mt-5 font-display text-3xl font-bold text-ink-900">₹{course.price}</p>
+
+            <div className="mt-6 flex items-baseline gap-2">
+              <span className="text-xs uppercase tracking-wider text-slate-400 font-semibold">Total Price:</span>
+              <p className="font-display text-3xl font-black text-white">₹{course.price}</p>
+            </div>
 
             {isInstructorOwner ? (
-              <p className="mt-5 rounded-lg bg-ink-50 px-4 py-3 text-center text-sm text-charcoal-dim">
-                Instructors can't enroll in courses
-              </p>
+              <div className="mt-6 rounded-2xl bg-aurora-indigo/10 border border-aurora-indigo/30 p-4 text-center">
+                <p className="text-xs font-semibold text-aurora-cyan">You created this course</p>
+                <Link
+                  to={`/dashboard/edit-course/${course._id}`}
+                  className="mt-3 block rounded-xl aurora-btn py-2.5 text-xs font-bold text-white text-center"
+                >
+                  Edit Course
+                </Link>
+              </div>
             ) : alreadyEnrolled ? (
               <Link
                 to={`/view-course/${course._id}`}
-                className="mt-5 block rounded-lg bg-emerald-500 py-3 text-center text-sm font-semibold text-white transition hover:bg-emerald-600"
+                className="mt-6 block rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 py-3 text-center text-sm font-bold text-white shadow-lg shadow-emerald-500/25 transition hover:brightness-110"
               >
-                Go to course
+                Go to Course Player &rarr;
               </Link>
             ) : (
-              <div className="mt-5 flex flex-col gap-3">
+              <div className="mt-6 flex flex-col gap-3">
                 <button
                   onClick={handleBuyNow}
-                  className="rounded-lg bg-ink-900 py-3 text-sm font-semibold text-white transition hover:bg-ink-800"
+                  className="aurora-btn rounded-xl py-3 text-sm font-bold text-white"
                 >
-                  Buy now
+                  Enroll Now
                 </button>
                 <button
                   onClick={handleAddToCart}
                   disabled={alreadyInCart}
-                  className="rounded-lg border border-ink-900 py-3 text-sm font-semibold text-ink-900 transition hover:bg-ink-50 disabled:opacity-50"
+                  className="rounded-xl border border-white/15 bg-white/5 py-3 text-sm font-semibold text-slate-200 transition hover:bg-white/10 hover:border-aurora-cyan/40 disabled:opacity-50"
                 >
-                  {alreadyInCart ? "Already in cart" : "Add to cart"}
+                  {alreadyInCart ? "Already in Cart" : "Add to Cart"}
                 </button>
               </div>
             )}
 
-            <div className="mt-6 space-y-2 text-sm text-charcoal-dim">
-              <p className="flex items-center gap-2"><FaRegPlayCircle /> {totalLectures} on-demand lectures</p>
-              <p className="flex items-center gap-2"><FaRegClock /> Lifetime access</p>
+            <div className="mt-6 border-t border-white/5 pt-5 space-y-2.5 text-xs text-slate-400">
+              <p className="flex items-center gap-2 text-slate-300">
+                <FaRegPlayCircle className="text-aurora-cyan" /> {totalLectures} on-demand video lectures
+              </p>
+              <p className="flex items-center gap-2 text-slate-300">
+                <FaRegClock className="text-aurora-indigo" /> Full lifetime access
+              </p>
             </div>
           </div>
         </aside>

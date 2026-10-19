@@ -33,8 +33,9 @@ export default function EditCourse() {
 
   return (
     <div>
-      <h1 className="font-display text-2xl font-bold text-charcoal">Edit course</h1>
-      <div className="mt-6 max-w-3xl">
+      <h1 className="font-display text-2xl sm:text-3xl font-bold text-white">Edit Course</h1>
+      <p className="mt-1 text-sm text-slate-400">Update your course details, section modules, and publishing status.</p>
+      <div className="mt-8 max-w-3xl">
         <RenderSteps />
         {step === 1 && <CourseInformationForm />}
         {step === 2 && <CourseBuilderForm />}

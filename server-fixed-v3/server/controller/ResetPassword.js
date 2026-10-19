@@ -41,7 +41,8 @@ exports.resetPasswordToken = async (req, res) => {
         );
 
         // Step 5: Create frontend URL
-        const url = `http://localhost:3000/update-password/${token}`;
+        const frontendUrl = process.env.FRONTEND_URL || "http://localhost:3000";
+        const url = `${frontendUrl}/update-password/${token}`;
 
         // Step 6: Send email with the reset link
         await mailSender(
@@ -55,13 +56,10 @@ exports.resetPasswordToken = async (req, res) => {
             </div>`
         );
 
-        console.log(url);
-
-        // Step 7: Response
+        // Step 7: Response - DO NOT leak token or reset URL in the JSON response
         return res.status(200).json({
             success: true,
-            message: "Reset Password Link Generated",
-            url,
+            message: "Password reset email sent successfully",
         });
 
     } catch (error) {
@@ -127,11 +125,8 @@ exports.resetPassword = async (req, res) => {
         await User.findByIdAndUpdate(
             user._id,
             {
-                password: hashedPassword,
-
-                // Remove token after successful use
-                resetPasswordToken: undefined,
-                resetPasswordExpires: undefined,
+                $set: { password: hashedPassword },
+                $unset: { resetPasswordToken: 1, resetPasswordExpires: 1 }
             }
         );
 

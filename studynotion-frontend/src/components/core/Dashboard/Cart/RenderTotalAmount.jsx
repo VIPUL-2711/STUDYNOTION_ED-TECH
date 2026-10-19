@@ -15,15 +15,15 @@ export default function RenderTotalAmount() {
   }
 
   return (
-    <div className="h-fit rounded-2xl border border-ink-100 bg-white p-6">
-      <p className="text-sm text-charcoal-dim">Total</p>
-      <p className="mt-1 font-display text-3xl font-bold text-ink-900">₹{total}</p>
+    <div className="glass-card h-fit rounded-3xl border border-white/10 p-6">
+      <p className="text-xs uppercase tracking-wider text-slate-400 font-semibold">Total Amount</p>
+      <p className="mt-2 font-display text-3xl font-black text-white">₹{total}</p>
       <button
         onClick={handleCheckout}
         disabled={paymentLoading || cart.length === 0}
-        className="mt-6 w-full rounded-lg bg-ink-900 py-3 text-sm font-semibold text-white transition hover:bg-ink-800 disabled:opacity-60"
+        className="aurora-btn mt-6 w-full rounded-xl py-3.5 text-sm font-bold text-white transition disabled:opacity-50"
       >
-        {paymentLoading ? "Processing..." : "Checkout"}
+        {paymentLoading ? "Processing..." : "Complete Purchase"}
       </button>
     </div>
   )

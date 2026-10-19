@@ -29,12 +29,14 @@ exports.capturePayment= async (req,res) =>{
           });
         }
 
-        // usewr already pay for the same course
-        const uid = new mongoose.Types.ObjectId(user_id);
-        if(course.studentsEnrolled.includes(uid)){
+        // user already enrolled for the same course
+        const isEnrolled = (course.studentsEnrolled || []).some(
+          (id) => id.toString() === user_id.toString()
+        );
+        if (isEnrolled) {
           return res.status(200).json({
-            success:false,
-            message:'student is alredy enrolled',
+            success: false,
+            message: "Student is already enrolled in this course",
           });
         }
     } catch (error) {
@@ -45,7 +47,7 @@ exports.capturePayment= async (req,res) =>{
       });
     }
     //create order
-    const amount =course.price;
+    const amount = Number(course.price) || 0;
     const currency ="INR";
     //create option
     const option = {
@@ -109,6 +111,13 @@ exports.verifySignature = async (req, res) => {
       });
     }
 
+    if (!process.env.RAZORPAY_SECRET) {
+      return res.status(500).json({
+        success: false,
+        message: "Razorpay secret is not configured",
+      });
+    }
+
     // recompute the expected signature using our key secret
     const body = razorpay_order_id + "|" + razorpay_payment_id;
     const expectedSignature = crypto
@@ -127,7 +136,7 @@ exports.verifySignature = async (req, res) => {
     const updatedCourse = await Course.findByIdAndUpdate(
       course_id,
       {
-        $push: {
+        $addToSet: {
           studentsEnrolled: user_id,
         },
       },
@@ -144,7 +153,7 @@ exports.verifySignature = async (req, res) => {
     const updatedUser = await User.findByIdAndUpdate(
       user_id,
       {
-        $push: {
+        $addToSet: {
           courses: course_id,
         },
       },

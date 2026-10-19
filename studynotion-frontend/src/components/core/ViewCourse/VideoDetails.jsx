@@ -20,8 +20,10 @@ export default function VideoDetails() {
 
   if (!sectionId || !subSectionId) {
     return (
-      <div className="flex h-[calc(100vh-64px)] flex-1 items-center justify-center px-6 text-center">
-        <p className="text-charcoal-dim">Pick a lecture from the sidebar to get started.</p>
+      <div className="flex h-[calc(100vh-3.5rem)] flex-1 items-center justify-center px-6 text-center">
+        <div className="glass-card max-w-md p-8 rounded-2xl border border-white/10">
+          <p className="text-slate-300 font-medium">Select a lecture from the sidebar to start learning.</p>
+        </div>
       </div>
     )
   }
@@ -31,8 +33,10 @@ export default function VideoDetails() {
 
   if (!currentSection || !currentSub) {
     return (
-      <div className="flex h-[calc(100vh-64px)] flex-1 items-center justify-center px-6 text-center">
-        <p className="text-charcoal-dim">This lecture could not be found.</p>
+      <div className="flex h-[calc(100vh-3.5rem)] flex-1 items-center justify-center px-6 text-center">
+        <div className="glass-card max-w-md p-8 rounded-2xl border border-white/10">
+          <p className="text-slate-300 font-medium">This lecture could not be found.</p>
+        </div>
       </div>
     )
   }
@@ -62,65 +66,81 @@ export default function VideoDetails() {
   }
 
   return (
-    <div className="flex-1 px-6 py-8 sm:px-10">
-      <div className="mx-auto max-w-4xl">
-        <div className="aspect-video w-full overflow-hidden rounded-2xl bg-black">
+    <div className="flex-1 px-4 py-6 sm:px-8 md:px-10 md:py-8">
+      <div className="mx-auto max-w-5xl">
+        {/* Video Theater Frame */}
+        <div className="aspect-video w-full overflow-hidden rounded-2xl bg-black border border-white/10 shadow-2xl">
           {currentSub.videoURL ? (
             <video
               key={currentSub._id}
               src={currentSub.videoURL}
               controls
-              className="h-full w-full"
+              controlsList="nodownload"
+              className="h-full w-full object-contain"
               onEnded={handleMarkComplete}
             />
           ) : (
-            <div className="flex h-full items-center justify-center text-white/60">No video uploaded</div>
+            <div className="flex h-full items-center justify-center text-slate-400">
+              No video source available for this lecture
+            </div>
           )}
         </div>
 
+        {/* Action Header */}
         <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
           <div>
-            <h1 className="font-display text-xl font-bold text-charcoal">{currentSub.title}</h1>
-            <p className="mt-1 text-sm text-charcoal-dim">{currentSection.sectionName}</p>
+            <h1 className="font-display text-xl sm:text-2xl font-bold text-white">
+              {currentSub.title}
+            </h1>
+            <p className="mt-1 text-xs sm:text-sm font-medium text-cyan-400">
+              {currentSection.sectionName}
+            </p>
           </div>
           <button
             onClick={handleMarkComplete}
             disabled={marking || isComplete}
-            className={`flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-semibold transition disabled:cursor-default ${
+            className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold transition ${
               isComplete
-                ? "bg-emerald-100 text-emerald-700"
-                : "bg-ink-900 text-white hover:bg-ink-800"
+                ? "border border-emerald-500/40 bg-emerald-500/10 text-emerald-300 cursor-default"
+                : "aurora-btn text-white disabled:opacity-50"
             }`}
           >
-            <BsCheckCircleFill />
-            {isComplete ? "Completed" : marking ? "Saving..." : "Mark as complete"}
+            <BsCheckCircleFill className={isComplete ? "text-emerald-400" : "text-white"} />
+            {isComplete ? "Completed" : marking ? "Saving..." : "Mark as Complete"}
           </button>
         </div>
 
-        <p className="mt-4 text-sm text-charcoal-dim">{currentSub.description}</p>
+        {/* Lecture Notes / Description */}
+        {currentSub.description && (
+          <div className="mt-6 rounded-xl border border-white/10 bg-midnight-card/60 p-5 backdrop-blur-md">
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">About this lecture</h3>
+            <p className="text-sm text-slate-300 leading-relaxed whitespace-pre-line">{currentSub.description}</p>
+          </div>
+        )}
 
-        <div className="mt-8 flex items-center justify-between border-t border-ink-100 pt-6">
+        {/* Bottom Navigation */}
+        <div className="mt-8 flex items-center justify-between border-t border-white/10 pt-6">
           <button
             onClick={() => prevLecture && goTo(prevLecture)}
             disabled={!prevLecture}
-            className="rounded-lg border border-ink-100 px-5 py-2.5 text-sm font-medium text-charcoal-dim disabled:opacity-40"
+            className="rounded-xl border border-white/15 px-5 py-2.5 text-sm font-medium text-slate-300 hover:bg-white/5 hover:text-white disabled:opacity-30 disabled:pointer-events-none transition"
           >
-            Previous
+            ← Previous Lecture
           </button>
 
           <button
             onClick={() => setShowReviewModal(true)}
-            className="text-sm font-medium text-ink-900 hover:underline"
+            className="text-xs sm:text-sm font-semibold text-cyan-400 hover:text-cyan-300 hover:underline transition"
           >
-            Leave a review
+            ★ Leave a Review
           </button>
 
           <button
             onClick={() => nextLecture && goTo(nextLecture)}
             disabled={!nextLecture}
-            className="rounded-lg bg-ink-900 px-5 py-2.5 text-sm font-medium text-white disabled:opacity-40"
+            className="aurora-btn px-6 py-2.5 text-sm font-semibold text-white disabled:opacity-30 disabled:pointer-events-none"
           >
-            Next
+            Next Lecture →
           </button>
         </div>
       </div>

@@ -1,6 +1,8 @@
 const User=require("../model/users");
 const Course=require("../model/Course");
 const CourseProgress=require("../model/CourseProgress");
+const Section = require("../model/Section");
+const SubSection = require("../model/SubSection");
 const {uploadtoCloudinary} = require("../utils/imageUpload");
 const Category = require("../model/Category");
 
@@ -10,14 +12,14 @@ exports.createCourse=async (req,res)=>{
     const { courseName , courseDescription , WhatYouWillLearn , price , category, tag } = req.body || {};
 
     // fetch thumbnail; 
-    const thumbnail = req.files.thumbnailImage;
+    const thumbnail = req.files ? req.files.thumbnailImage : null;
 
     // validation 
      
     if(!courseName || !courseDescription || !WhatYouWillLearn || !price || !category || !thumbnail){
       return res.status(400).json({
         success:false,
-        message:"all feilds are requried to fill",
+        message:"All fields including course thumbnail image are required",
       });
     }
     // check for the insrtuctor
@@ -251,6 +253,14 @@ exports.editCourse = async (req,res) => {
       });
     }
 
+    // Verify ownership
+    if (course.instructor.toString() !== req.user.id && req.user.accountType !== "Admin") {
+      return res.status(403).json({
+        success: false,
+        message: "You are not authorized to edit this course",
+      });
+    }
+
     // if a new thumbnail was uploaded, replace it
     if(req.files && req.files.thumbnailImage){
       const thumbnail = req.files.thumbnailImage;
@@ -329,6 +339,14 @@ exports.deleteCourse = async (req,res) => {
       });
     }
 
+    // Verify ownership
+    if (course.instructor.toString() !== req.user.id && req.user.accountType !== "Admin") {
+      return res.status(403).json({
+        success: false,
+        message: "You are not authorized to delete this course",
+      });
+    }
+
     // remove course reference from enrolled students
     const studentsEnrolled = course.studentsEnrolled || [];
     for(const studentId of studentsEnrolled){
@@ -343,9 +361,27 @@ exports.deleteCourse = async (req,res) => {
     });
 
     // remove course reference from its category
-    await Category.findByIdAndUpdate(course.category,{
-      $pull:{courses:courseId},
-    });
+    if (course.category) {
+      await Category.findByIdAndUpdate(course.category,{
+        $pull:{courses:courseId},
+      });
+    }
+
+    // Cascade delete sections and subsections
+    const courseSections = course.courseContent || [];
+    for (const sectionId of courseSections) {
+      const section = await Section.findById(sectionId);
+      if (section) {
+        const subSections = section.subSection || [];
+        for (const subSectionId of subSections) {
+          await SubSection.findByIdAndDelete(subSectionId);
+        }
+        await Section.findByIdAndDelete(sectionId);
+      }
+    }
+
+    // Delete course progress records
+    await CourseProgress.deleteMany({ courseID: courseId });
 
     await Course.findByIdAndDelete(courseId);
 

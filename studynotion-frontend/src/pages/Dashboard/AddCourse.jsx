@@ -17,8 +17,9 @@ export default function AddCourse() {
 
   return (
     <div>
-      <h1 className="font-display text-2xl font-bold text-charcoal">Add a new course</h1>
-      <div className="mt-6 max-w-3xl">
+      <h1 className="font-display text-2xl sm:text-3xl font-bold text-white">Add New Course</h1>
+      <p className="mt-1 text-sm text-slate-400">Fill in the course details, organize curriculum, and publish to students.</p>
+      <div className="mt-8 max-w-3xl">
         <RenderSteps />
         {step === 1 && <CourseInformationForm />}
         {step === 2 && <CourseBuilderForm />}
